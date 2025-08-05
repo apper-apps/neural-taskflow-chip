@@ -1,56 +1,56 @@
 [
-  {
+{
     "Id": 1,
-    "name": "Work",
+    "Name": "Work",
     "color": "#5B4EF5",
     "icon": "Briefcase",
     "taskCount": 8
   },
-  {
+{
     "Id": 2,
-    "name": "Personal",
+    "Name": "Personal",
     "color": "#4CAF50",
     "icon": "User",
     "taskCount": 5
   },
-  {
+{
     "Id": 3,
-    "name": "Shopping",
+    "Name": "Shopping",
     "color": "#FF9800",
     "icon": "ShoppingCart",
     "taskCount": 3
   },
-  {
+{
     "Id": 4,
-    "name": "Health",
+    "Name": "Health",
     "color": "#E91E63",
     "icon": "Heart",
     "taskCount": 4
   },
-  {
+{
     "Id": 5,
-    "name": "Finance",
+    "Name": "Finance",
     "color": "#2196F3",
     "icon": "DollarSign",
     "taskCount": 2
   },
-  {
+{
     "Id": 6,
-    "name": "Learning",
+    "Name": "Learning",
     "color": "#9C27B0",
     "icon": "BookOpen",
     "taskCount": 6
   },
-  {
+{
     "Id": 7,
-    "name": "Projects",
+    "Name": "Projects",
     "color": "#795548",
     "icon": "FolderOpen",
     "taskCount": 4
   },
-  {
+{
     "Id": 8,
-    "name": "Social",
+    "Name": "Social",
     "color": "#FF5722",
     "icon": "Users",
     "taskCount": 3
