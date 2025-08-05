@@ -15,11 +15,17 @@ export const taskService = {
 fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
           { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -60,11 +66,17 @@ fields: [
 fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
           { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -99,13 +111,20 @@ fields: [
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -151,11 +170,17 @@ fields: [
 records: [{
           Name: taskData.title || taskData.Name,
           title: taskData.title,
+          taskId: taskData.taskId || "",
           description: taskData.description || "",
           categoryId: parseInt(taskData.categoryId),
           projectId: taskData.projectId ? parseInt(taskData.projectId) : null,
           priority: taskData.priority || "medium",
-          dueDate: taskData.dueDate,
+          assignedTo: taskData.assignedTo ? parseInt(taskData.assignedTo) : null,
+          startDate: taskData.startDate || "",
+          dueDate: taskData.dueDate || "",
+          estimatedTime: taskData.estimatedTime ? parseInt(taskData.estimatedTime) : null,
+          taskStatus: taskData.taskStatus || "New",
+          progress: taskData.progress ? parseInt(taskData.progress) : 0,
           completed: false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -215,11 +240,17 @@ records: [{
           Id: parseInt(id),
           Name: taskData.title || taskData.Name,
           title: taskData.title,
+          taskId: taskData.taskId,
           description: taskData.description,
           categoryId: parseInt(taskData.categoryId),
           projectId: taskData.projectId ? parseInt(taskData.projectId) : null,
           priority: taskData.priority,
+          assignedTo: taskData.assignedTo ? parseInt(taskData.assignedTo) : null,
+          startDate: taskData.startDate,
           dueDate: taskData.dueDate,
+          estimatedTime: taskData.estimatedTime ? parseInt(taskData.estimatedTime) : null,
+          taskStatus: taskData.taskStatus,
+          progress: taskData.progress ? parseInt(taskData.progress) : 0,
           completed: taskData.completed,
           updatedAt: new Date().toISOString()
         }]
@@ -342,13 +373,20 @@ records: [{
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -410,13 +448,20 @@ records: [{
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -458,13 +503,20 @@ records: [{
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -506,13 +558,20 @@ records: [{
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
@@ -557,13 +616,20 @@ records: [{
       today.setHours(0, 0, 0, 0);
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
+          { field: { Name: "taskId" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
+          { field: { Name: "assignedTo" } },
+          { field: { Name: "startDate" } },
           { field: { Name: "dueDate" } },
+          { field: { Name: "estimatedTime" } },
+          { field: { Name: "taskStatus" } },
+          { field: { Name: "progress" } },
           { field: { Name: "completed" } },
           { field: { Name: "createdAt" } },
           { field: { Name: "updatedAt" } }
