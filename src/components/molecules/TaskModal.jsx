@@ -163,12 +163,13 @@ onClick={(e) => e.stopPropagation()}
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Category
                     </label>
-                    <Select
+<Select
                       value={formData.categoryId}
                       onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
                       required
                     >
-{categories.map(category => (
+                      <option value="">Select a category</option>
+                      {categories.map(category => (
                         <option key={category.Id} value={category.Id}>
                           {category.Name || category.name}
                         </option>
