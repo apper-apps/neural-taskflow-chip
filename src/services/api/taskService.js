@@ -600,14 +600,13 @@ export const taskService = {
       }
 
       return response.data || [];
-    } catch (error) {
+} catch (error) {
       if (error?.response?.data?.message) {
         console.error("Error fetching overdue tasks:", error.response.data.message);
       } else {
         console.error("Error fetching overdue tasks:", error.message);
       }
       return [];
-return [];
     }
   }
 };
