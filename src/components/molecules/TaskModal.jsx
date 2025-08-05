@@ -17,19 +17,21 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
     Name: "",
     color: "#5B4EF5"
   });
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     title: "",
     description: "",
     categoryId: "",
+    projectId: "",
     priority: "medium",
     dueDate: ""
   });
 useEffect(() => {
     if (task) {
-      setFormData({
+setFormData({
         title: task.title || "",
         description: task.description || "",
         categoryId: task.categoryId?.Id || task.categoryId || "",
+        projectId: task.projectId?.Id || task.projectId || "",
         priority: task.priority || "medium",
         dueDate: task.dueDate || ""
       });
@@ -38,6 +40,7 @@ useEffect(() => {
         title: "",
         description: "",
         categoryId: categories.length > 0 ? categories[0].Id : "",
+        projectId: "",
         priority: "medium",
         dueDate: new Date().toISOString().split("T")[0]
       });
@@ -67,9 +70,10 @@ useEffect(() => {
     try {
       let updatedTask;
 if (task) {
-        updatedTask = await taskService.update(task.Id, {
+updatedTask = await taskService.update(task.Id, {
           ...formData,
-          categoryId: parseInt(formData.categoryId)
+          categoryId: parseInt(formData.categoryId),
+          projectId: formData.projectId ? parseInt(formData.projectId) : null
         });
         if (updatedTask) {
           toast.success("Task updated successfully!");
@@ -77,7 +81,8 @@ if (task) {
       } else {
         updatedTask = await taskService.create({
           ...formData,
-          categoryId: parseInt(formData.categoryId)
+          categoryId: parseInt(formData.categoryId),
+          projectId: formData.projectId ? parseInt(formData.projectId) : null
         });
         if (updatedTask) {
           toast.success("Task created successfully!");
@@ -292,6 +297,19 @@ onClick={(e) => e.stopPropagation()}
                         </div>
                       </div>
                     )}
+                  </div>
+
+<div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Project (Optional)
+                    </label>
+                    <Select
+                      value={formData.projectId}
+                      onChange={(e) => setFormData(prev => ({ ...prev, projectId: e.target.value }))}
+                    >
+                      <option value="">No Project</option>
+                      {/* Projects will be loaded via service */}
+                    </Select>
                   </div>
 
                   <div>

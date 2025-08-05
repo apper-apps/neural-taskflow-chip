@@ -12,11 +12,12 @@ export const taskService = {
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
           { field: { Name: "dueDate" } },
           { field: { Name: "completed" } },
@@ -56,11 +57,12 @@ export const taskService = {
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
           { field: { Name: "description" } },
           { field: { Name: "categoryId" } },
+          { field: { Name: "projectId" } },
           { field: { Name: "priority" } },
           { field: { Name: "dueDate" } },
           { field: { Name: "completed" } },
@@ -146,11 +148,12 @@ export const taskService = {
 
       // Only include Updateable fields
       const params = {
-        records: [{
+records: [{
           Name: taskData.title || taskData.Name,
           title: taskData.title,
           description: taskData.description || "",
           categoryId: parseInt(taskData.categoryId),
+          projectId: taskData.projectId ? parseInt(taskData.projectId) : null,
           priority: taskData.priority || "medium",
           dueDate: taskData.dueDate,
           completed: false,
@@ -208,12 +211,13 @@ export const taskService = {
 
       // Only include Updateable fields
       const params = {
-        records: [{
+records: [{
           Id: parseInt(id),
           Name: taskData.title || taskData.Name,
           title: taskData.title,
           description: taskData.description,
           categoryId: parseInt(taskData.categoryId),
+          projectId: taskData.projectId ? parseInt(taskData.projectId) : null,
           priority: taskData.priority,
           dueDate: taskData.dueDate,
           completed: taskData.completed,

@@ -12,6 +12,7 @@ const QuickAddTask = ({ categories, onTaskAdded, selectedCategoryId }) => {
 const [taskData, setTaskData] = useState({
     title: "",
     categoryId: selectedCategoryId || (categories.length > 0 ? categories[0].Id : ""),
+    projectId: "",
     priority: "medium",
     dueDate: new Date().toISOString().split("T")[0]
   });
@@ -28,12 +29,14 @@ const [taskData, setTaskData] = useState({
 const newTask = await taskService.create({
         ...taskData,
         categoryId: parseInt(taskData.categoryId),
+        projectId: taskData.projectId ? parseInt(taskData.projectId) : null,
         description: ""
       });
       
-      setTaskData({
+setTaskData({
         title: "",
         categoryId: selectedCategoryId || (categories.length > 0 ? categories[0].Id : ""),
+        projectId: "",
         priority: "medium",
         dueDate: new Date().toISOString().split("T")[0]
       });
@@ -146,6 +149,20 @@ const newTask = await taskService.create({
                     </option>
                   ))}
                 </Select>
+</div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Project
+                </label>
+                <Select
+                  value={taskData.projectId}
+                  onChange={(e) => setTaskData(prev => ({ ...prev, projectId: e.target.value }))}
+                  className="text-sm"
+                >
+                  <option value="">No Project</option>
+                  {/* Projects will be loaded via service */}
+                </Select>
               </div>
 
               <div>
@@ -176,6 +193,7 @@ const newTask = await taskService.create({
                 />
               </div>
             </motion.div>
+          )}
 )}
         </form>
       </motion.div>
