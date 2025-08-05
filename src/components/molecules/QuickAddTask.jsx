@@ -192,9 +192,8 @@ setTaskData({
                   className="text-sm"
                 />
               </div>
-            </motion.div>
+</motion.div>
           )}
-)}
         </form>
       </motion.div>
     </motion.div>
