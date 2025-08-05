@@ -108,8 +108,8 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden"
+onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden flex flex-col"
           >
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <h2 className="text-xl font-semibold text-gray-900">
@@ -125,8 +125,9 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
               </Button>
             </div>
 
-            <div className="p-6 overflow-y-auto">
-              <form onSubmit={handleSubmit} className="space-y-6">
+<div className="flex-1 overflow-y-auto">
+              <form onSubmit={handleSubmit} className="h-full flex flex-col">
+                <div className="p-6 space-y-6 flex-1">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Task Title *
@@ -188,7 +189,7 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
                   </div>
                 </div>
 
-                <div>
+<div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Due Date
                   </label>
@@ -198,8 +199,10 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
                     onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))}
                   />
                 </div>
-
-                <div className="flex items-center justify-end space-x-3 pt-4">
+                </div>
+                
+                {/* Fixed Footer with Action Buttons */}
+                <div className="border-t border-gray-200 bg-gray-50 px-6 py-4 flex items-center justify-end space-x-3 rounded-b-2xl">
                   <Button
                     type="button"
                     variant="secondary"
