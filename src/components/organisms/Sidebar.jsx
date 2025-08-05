@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
+import { taskService } from "@/services/api/taskService";
+import { categoryService } from "@/services/api/categoryService";
 import ApperIcon from "@/components/ApperIcon";
 import CategoryItem from "@/components/molecules/CategoryItem";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
-import { categoryService } from "@/services/api/categoryService";
-import { taskService } from "@/services/api/taskService";
 
 const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
   const { categoryId } = useParams();
   const [categories, setCategories] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [taskCounts, setTaskCounts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,7 +20,7 @@ useEffect(() => {
     loadData();
   }, []);
 
-  const loadData = async () => {
+const loadData = async () => {
     setLoading(true);
     setError("");
     
@@ -30,6 +31,9 @@ useEffect(() => {
       ]);
       
       setCategories(categoriesData);
+      
+      // Initialize empty projects array (can be updated when project service is available)
+      setProjects([]);
       
       // Calculate task counts per category
       const counts = {};
@@ -66,7 +70,7 @@ useEffect(() => {
       </div>
 
       <div className="flex-1 overflow-y-auto p-6">
-        <div className="mb-6">
+<div className="mb-6">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
             Categories
           </h2>
@@ -91,6 +95,61 @@ useEffect(() => {
                   isActive={parseInt(categoryId) === category.Id}
                   taskCount={taskCounts[category.Id] || 0}
                 />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="mb-6">
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+            Projects
+          </h2>
+          
+          {loading ? (
+            <Loading type="projects" />
+          ) : error ? (
+            <Error 
+              type="projects"
+              message={error}
+              onRetry={loadData}
+            />
+          ) : (
+            <div className="space-y-2">
+              {projects.map(project => (
+                <motion.div
+                  key={project.Id}
+                  className="p-3 rounded-lg bg-white border border-gray-100 hover:border-primary/20 hover:shadow-sm transition-all duration-200 cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-lg flex items-center justify-center">
+                      <ApperIcon name="KanbanSquare" size={14} className="text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 truncate">
+                        {project.Name}
+                      </h3>
+                      {project.Description && (
+                        <p className="text-xs text-gray-500 truncate mt-1">
+                          {project.Description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {project.Tags && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {project.Tags.split(',').slice(0, 2).map((tag, index) => (
+                        <span 
+                          key={index}
+                          className="inline-block px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
               ))}
             </div>
           )}

@@ -7,11 +7,13 @@ import QuickAddTask from "@/components/molecules/QuickAddTask";
 import TaskModal from "@/components/molecules/TaskModal";
 import { taskService } from "@/services/api/taskService";
 import { categoryService } from "@/services/api/categoryService";
+import { projectService } from "@/services/api/projectService";
 
 const Dashboard = ({ onMobileMenuToggle }) => {
   const { categoryId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [categories, setCategories] = useState([]);
+const [categories, setCategories] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,13 +34,15 @@ useEffect(() => {
     setError("");
     
     try {
-      const [tasksData, categoriesData] = await Promise.all([
+const [tasksData, categoriesData, projectsData] = await Promise.all([
         taskService.getAll(),
-        categoryService.getAll()
+        categoryService.getAll(),
+        projectService.getAll()
       ]);
       
       setTasks(tasksData);
       setCategories(categoriesData);
+      setProjects(projectsData);
     } catch (err) {
       setError(err.message);
       console.error("Error loading data:", err);
