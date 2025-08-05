@@ -9,8 +9,9 @@ export const categoryService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
-      const params = {
+const params = {
         fields: [
+          { field: { Name: "Id" } },
           { field: { Name: "Name" } },
           { field: { Name: "color" } },
           { field: { Name: "icon" } },
