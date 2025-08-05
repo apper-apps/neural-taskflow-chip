@@ -9,7 +9,7 @@ import { taskService } from "@/services/api/taskService";
 const QuickAddTask = ({ categories, onTaskAdded, selectedCategoryId }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [taskData, setTaskData] = useState({
+const [taskData, setTaskData] = useState({
     title: "",
     categoryId: selectedCategoryId || (categories.length > 0 ? categories[0].Id : ""),
     priority: "medium",
@@ -25,7 +25,7 @@ const QuickAddTask = ({ categories, onTaskAdded, selectedCategoryId }) => {
 
     setIsLoading(true);
     try {
-      const newTask = await taskService.create({
+const newTask = await taskService.create({
         ...taskData,
         categoryId: parseInt(taskData.categoryId),
         description: ""
@@ -141,8 +141,8 @@ const QuickAddTask = ({ categories, onTaskAdded, selectedCategoryId }) => {
                   className="text-sm"
                 >
                   {categories.map(category => (
-                    <option key={category.Id} value={category.Id}>
-                      {category.name}
+<option key={category.Id} value={category.Id}>
+                      {category.Name || category.name}
                     </option>
                   ))}
                 </Select>

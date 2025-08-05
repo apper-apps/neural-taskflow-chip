@@ -23,7 +23,7 @@ const Dashboard = ({ onMobileMenuToggle }) => {
     loadData();
   }, []);
 
-  useEffect(() => {
+useEffect(() => {
     filterTasks();
   }, [tasks, categoryId, searchQuery]);
 
@@ -47,12 +47,15 @@ const Dashboard = ({ onMobileMenuToggle }) => {
     }
   };
 
-  const filterTasks = useCallback(() => {
+const filterTasks = useCallback(() => {
     let filtered = [...tasks];
 
     // Filter by category
     if (categoryId) {
-      filtered = filtered.filter(task => task.categoryId === parseInt(categoryId));
+      filtered = filtered.filter(task => {
+        const taskCategoryId = task.categoryId?.Id || task.categoryId;
+        return taskCategoryId === parseInt(categoryId);
+      });
     }
 
     // Filter by search query
@@ -77,7 +80,7 @@ const Dashboard = ({ onMobileMenuToggle }) => {
     setFilteredTasks(filtered);
   }, [tasks, categoryId, searchQuery]);
 
-  const handleTaskUpdate = (updatedTask) => {
+const handleTaskUpdate = (updatedTask) => {
     setTasks(prevTasks => 
       prevTasks.map(task => 
         task.Id === updatedTask.Id ? updatedTask : task
@@ -88,7 +91,6 @@ const Dashboard = ({ onMobileMenuToggle }) => {
   const handleTaskAdd = (newTask) => {
     setTasks(prevTasks => [newTask, ...prevTasks]);
   };
-
   const handleTaskDelete = (taskId) => {
     setTasks(prevTasks => prevTasks.filter(task => task.Id !== taskId));
   };
@@ -117,9 +119,9 @@ const Dashboard = ({ onMobileMenuToggle }) => {
   };
 
   const getPageTitle = () => {
-    if (categoryId) {
+if (categoryId) {
       const category = categories.find(cat => cat.Id === parseInt(categoryId));
-      return category ? category.name : "Category";
+      return category ? (category.Name || category.name) : "Category";
     }
     return "All Tasks";
   };
@@ -133,7 +135,7 @@ const Dashboard = ({ onMobileMenuToggle }) => {
       return `Found ${totalTasks} tasks matching "${searchQuery}"`;
     }
 
-    if (categoryId) {
+if (categoryId) {
       const category = categories.find(cat => cat.Id === parseInt(categoryId));
       return category ? `${pendingTasks} pending, ${completedTasks} completed` : "Category tasks";
     }

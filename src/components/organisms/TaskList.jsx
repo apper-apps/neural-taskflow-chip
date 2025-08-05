@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import TaskCard from "@/components/molecules/TaskCard";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
@@ -43,9 +43,9 @@ const TaskList = ({
 
   return (
     <div className="space-y-4">
-      <AnimatePresence mode="popLayout">
+<AnimatePresence mode="popLayout">
         {tasks.map(task => {
-          const category = categories.find(cat => cat.Id === task.categoryId);
+          const category = categories.find(cat => cat.Id === (task.categoryId?.Id || task.categoryId));
           
           return (
             <motion.div

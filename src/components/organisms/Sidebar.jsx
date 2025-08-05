@@ -15,7 +15,7 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
+useEffect(() => {
     loadData();
   }, []);
 
@@ -34,9 +34,10 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
       // Calculate task counts per category
       const counts = {};
       categoriesData.forEach(category => {
-        counts[category.Id] = tasksData.filter(task => 
-          task.categoryId === category.Id && !task.completed
-        ).length;
+        counts[category.Id] = tasksData.filter(task => {
+          const taskCategoryId = task.categoryId?.Id || task.categoryId;
+          return taskCategoryId === category.Id && !task.completed;
+        }).length;
       });
       setTaskCounts(counts);
       
@@ -79,11 +80,14 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
               onRetry={loadData}
             />
           ) : (
-            <div className="space-y-2">
+<div className="space-y-2">
               {categories.map(category => (
                 <CategoryItem
                   key={category.Id}
-                  category={category}
+                  category={{
+                    ...category,
+                    name: category.Name || category.name
+                  }}
                   isActive={parseInt(categoryId) === category.Id}
                   taskCount={taskCounts[category.Id] || 0}
                 />

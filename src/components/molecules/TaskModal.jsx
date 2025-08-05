@@ -18,12 +18,12 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
     dueDate: ""
   });
 
-  useEffect(() => {
+useEffect(() => {
     if (task) {
       setFormData({
         title: task.title || "",
         description: task.description || "",
-        categoryId: task.categoryId || "",
+        categoryId: task.categoryId?.Id || task.categoryId || "",
         priority: task.priority || "medium",
         dueDate: task.dueDate || ""
       });
@@ -60,18 +60,22 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
     setIsLoading(true);
     try {
       let updatedTask;
-      if (task) {
+if (task) {
         updatedTask = await taskService.update(task.Id, {
           ...formData,
           categoryId: parseInt(formData.categoryId)
         });
-        toast.success("Task updated successfully!");
+        if (updatedTask) {
+          toast.success("Task updated successfully!");
+        }
       } else {
         updatedTask = await taskService.create({
           ...formData,
           categoryId: parseInt(formData.categoryId)
         });
-        toast.success("Task created successfully!");
+        if (updatedTask) {
+          toast.success("Task created successfully!");
+        }
       }
       
       onTaskUpdate(updatedTask);
@@ -164,9 +168,9 @@ onClick={(e) => e.stopPropagation()}
                       onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
                       required
                     >
-                      {categories.map(category => (
+{categories.map(category => (
                         <option key={category.Id} value={category.Id}>
-                          {category.name}
+                          {category.Name || category.name}
                         </option>
                       ))}
                     </Select>
