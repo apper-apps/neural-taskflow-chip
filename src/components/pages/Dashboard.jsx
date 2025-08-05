@@ -53,6 +53,7 @@ const filterTasks = useCallback(() => {
     // Filter by category
     if (categoryId) {
       filtered = filtered.filter(task => {
+        if (!task) return false;
         const taskCategoryId = task.categoryId?.Id || task.categoryId;
         return taskCategoryId === parseInt(categoryId);
       });
@@ -62,19 +63,27 @@ const filterTasks = useCallback(() => {
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(query) ||
-        task.description.toLowerCase().includes(query)
+        task && task.title && task.description &&
+        (task.title.toLowerCase().includes(query) ||
+        task.description.toLowerCase().includes(query))
       );
     }
 
     // Sort by completion status and priority
     filtered.sort((a, b) => {
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1;
+      if (!a || !b) return 0;
+      
+      const aCompleted = a.completed || false;
+      const bCompleted = b.completed || false;
+      
+      if (aCompleted !== bCompleted) {
+        return aCompleted ? 1 : -1;
       }
       
       const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
-      return priorityOrder[b.priority] - priorityOrder[a.priority];
+      const aPriority = a.priority || 'low';
+      const bPriority = b.priority || 'low';
+      return priorityOrder[bPriority] - priorityOrder[aPriority];
     });
 
     setFilteredTasks(filtered);
@@ -126,16 +135,16 @@ if (categoryId) {
     return "All Tasks";
   };
 
-  const getPageSubtitle = () => {
+const getPageSubtitle = () => {
     const totalTasks = filteredTasks.length;
-    const completedTasks = filteredTasks.filter(task => task.completed).length;
+    const completedTasks = filteredTasks.filter(task => task && task.completed === true).length;
     const pendingTasks = totalTasks - completedTasks;
 
     if (searchQuery.trim()) {
       return `Found ${totalTasks} tasks matching "${searchQuery}"`;
     }
 
-if (categoryId) {
+    if (categoryId) {
       const category = categories.find(cat => cat.Id === parseInt(categoryId));
       return category ? `${pendingTasks} pending, ${completedTasks} completed` : "Category tasks";
     }
