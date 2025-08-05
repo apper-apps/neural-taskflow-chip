@@ -7,9 +7,16 @@ import Select from "@/components/atoms/Select";
 import Textarea from "@/components/atoms/Textarea";
 import ApperIcon from "@/components/ApperIcon";
 import { taskService } from "@/services/api/taskService";
+import { categoryService } from "@/services/api/categoryService";
 
 const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [isCreatingCategory, setIsCreatingCategory] = useState(false);
+  const [newCategoryForm, setNewCategoryForm] = useState({
+    Name: "",
+    color: "#5B4EF5"
+  });
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,7 +24,6 @@ const TaskModal = ({ isOpen, onClose, task, categories, onTaskUpdate }) => {
     priority: "medium",
     dueDate: ""
   });
-
 useEffect(() => {
     if (task) {
       setFormData({
@@ -158,12 +164,12 @@ onClick={(e) => e.stopPropagation()}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Category
                     </label>
-<Select
+                    <Select
                       value={formData.categoryId}
                       onChange={(e) => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
                       required
@@ -175,6 +181,117 @@ onClick={(e) => e.stopPropagation()}
                         </option>
                       ))}
                     </Select>
+                    
+                    {!showAddCategory && (
+                      <button
+                        type="button"
+                        onClick={() => setShowAddCategory(true)}
+                        className="mt-2 text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1"
+                      >
+                        <ApperIcon name="Plus" size={14} />
+                        Add Category
+                      </button>
+                    )}
+
+                    {showAddCategory && (
+                      <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-sm font-medium text-gray-700">Create New Category</h4>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowAddCategory(false);
+                              setNewCategoryForm({ Name: "", color: "#5B4EF5" });
+                            }}
+                            className="text-gray-400 hover:text-gray-600"
+                          >
+                            <ApperIcon name="X" size={16} />
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">
+                              Category Name *
+                            </label>
+                            <Input
+                              value={newCategoryForm.Name}
+                              onChange={(e) => setNewCategoryForm(prev => ({ ...prev, Name: e.target.value }))}
+                              placeholder="Enter category name"
+                              required
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-xs font-medium text-gray-600 mb-1">
+                              Color
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="color"
+                                value={newCategoryForm.color}
+                                onChange={(e) => setNewCategoryForm(prev => ({ ...prev, color: e.target.value }))}
+                                className="w-8 h-8 rounded border"
+                              />
+                              <span className="text-sm text-gray-500">{newCategoryForm.color}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex gap-2 pt-2">
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={async () => {
+                                if (!newCategoryForm.Name.trim()) {
+                                  toast.error("Category name is required");
+                                  return;
+                                }
+                                
+                                setIsCreatingCategory(true);
+                                try {
+                                  const newCategory = await categoryService.create({
+                                    Name: newCategoryForm.Name.trim(),
+                                    color: newCategoryForm.color,
+                                    icon: "Folder"
+                                  });
+                                  
+                                  if (newCategory) {
+                                    toast.success("Category created successfully");
+                                    setFormData(prev => ({ ...prev, categoryId: newCategory.Id }));
+                                    setShowAddCategory(false);
+                                    setNewCategoryForm({ Name: "", color: "#5B4EF5" });
+                                    
+                                    // Trigger categories refresh
+                                    if (onTaskUpdate) {
+                                      onTaskUpdate();
+                                    }
+                                  }
+                                } catch (error) {
+                                  toast.error("Failed to create category");
+                                } finally {
+                                  setIsCreatingCategory(false);
+                                }
+                              }}
+                              loading={isCreatingCategory}
+                              disabled={!newCategoryForm.Name.trim()}
+                            >
+                              Create
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => {
+                                setShowAddCategory(false);
+                                setNewCategoryForm({ Name: "", color: "#5B4EF5" });
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div>
